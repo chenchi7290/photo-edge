@@ -129,7 +129,6 @@ class WatermarkProcessor(ProcessorComponent):
         :param container: 图片对象
         :return: 添加水印后的图片对象
         """
-
         config = self.config
         config.bg_color = self.bg_color
 
@@ -140,6 +139,7 @@ class WatermarkProcessor(ProcessorComponent):
 
         # 创建一个空白的水印图片
         watermark = Image.new('RGBA', (int(NORMAL_HEIGHT / ratio), NORMAL_HEIGHT), color=self.bg_color)
+
         with Image.new('RGBA', (10, 100), color=self.bg_color) as empty_padding:
             # 填充左边的文字内容
             left_top = text_to_image(container.get_attribute_str(config.get_left_top()),
@@ -198,7 +198,6 @@ class WatermarkProcessor(ProcessorComponent):
 
         # 缩放水印的大小
         watermark = resize_image_with_width(watermark, container.get_width())
-
         # 将水印图片放置在原始图片的下方
         bg = ImageOps.expand(container.get_watermark_img().convert('RGBA'),
                              border=(0, 0, 0, watermark.height),

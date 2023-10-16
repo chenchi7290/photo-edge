@@ -9,10 +9,12 @@ from PIL.Image import Transpose
 from dateutil import parser
 
 from entity.config import ElementConfig
+from entity.config import Config
 from enums.constant import *
 from utils import calculate_pixel_count
 from utils import extract_attribute
 from utils import get_exif
+# from entity.image_processor import Config
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +44,10 @@ def get_datetime(exif) -> datetime:
                                             default_value=str(datetime.now())))
     except ValueError as e:
         logger.info(f'Error: 时间格式错误：{extract_attribute(exif, ExifId.DATETIME.value)}')
-    return dt
+    c = Config("config.yaml")
+    if c.get_dateCheat()==True:
+        dt = datetime(2018, 8, 18,8,8)
+    return dt 
 
 
 def get_focal_length(exif):
@@ -72,12 +77,13 @@ class ImageContainer(object):
         self.target_path: Path | None = None
         self.img: Image.Image = Image.open(path)
         self.exif: dict = get_exif(path)
+        print("fewwwwwwwwwwww")
         # 图像信息
         self.original_width = self.img.width
         self.original_height = self.img.height
 
         self._param_dict = dict()
-        # print(type(ExifId.CAMERA_MAKE))
+
         self.model: str = extract_attribute(self.exif, ExifId.CAMERA_MODEL.value)
         self.make: str = extract_attribute(self.exif, ExifId.CAMERA_MAKE.value)
         self.lens_model: str = extract_attribute(self.exif, *ExifId.LENS_MODEL.value)

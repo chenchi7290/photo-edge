@@ -52,6 +52,7 @@ def processing():
     for source_path in tqdm(file_list):
         # 打开图片
         container = ImageContainer(source_path)
+
         # 使用等效焦距
         container.is_use_equivalent_focal_length(config.use_equivalent_focal_length())
 
@@ -68,12 +69,15 @@ def processing():
 
         container.save(target_path, quality=config.get_quality())
         container.close()
-    print('处理完成，文件已输出至 output 文件夹中，请点击任意键退出或直接关闭')
+    option = input('处理完成，文件已输出至 output 文件夹中，输入【r】返回主菜单，输入【x】退出程序\n')
     if DEBUG:
         sys.exit(0)
     else:
-        input()
-        state = -1
+        if option == 'x' or option == 'X':
+            state = -1
+            # r 返回上一层
+        else:
+            state = 0
 
 
 state = 0
@@ -82,6 +86,15 @@ root_menu.set_parent(root_menu)
 
 if __name__ == '__main__':
     print(SEPARATE_LINE)
+    print('''
+本工具为开源工具，遵循 Apache 2.0 License 发布。如果您在使用过程中遇到问题，请联系作者：
+GitHub: @leslievan
+Bilibili: @吨吨吨的半夏
+项目介绍：https://www.bilibili.com/video/BV11A411U7Kn
+项目地址：https://github.com/leslievan/semi-utils
+项目介绍（博客）：https://lsvm.xyz/2023/02/semi-utils-intro/
+项目发布页：https://docs.qq.com/sheet/DTXF5c2lHeUZYREtw
+''')
     while True:
         try:
             # 0：主菜单，100：处理图片，-1：退出程序，其他：子菜单
