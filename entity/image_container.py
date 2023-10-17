@@ -77,7 +77,6 @@ class ImageContainer(object):
         self.target_path: Path | None = None
         self.img: Image.Image = Image.open(path)
         self.exif: dict = get_exif(path)
-        print("fewwwwwwwwwwww")
         # 图像信息
         self.original_width = self.img.width
         self.original_height = self.img.height
